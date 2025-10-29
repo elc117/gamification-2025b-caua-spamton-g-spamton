@@ -1,4 +1,8 @@
-# UniVenture
+<div align="center">
+  <h1 align="center">UniVenture 🗺️</h1> 
+  <h3 align="center">Gamification - Paradigmas de programação</h3>
+  <p align="center">Universidade Federal de Santa Maria<br><br>Aluno: Cauã Welter da Silva | Curso: Sistemas de Informação</p>
+</div>
 
 A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
 
