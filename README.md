@@ -6,6 +6,8 @@
 
 A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
 
+![giphy](https://github.com/user-attachments/assets/0a305b17-7b81-4186-9a5a-a3bf2dc9437a)
+
 This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension that draws libGDX logo.
 
 ## Platforms
