@@ -152,6 +152,9 @@ public void render() {
 
 > Desenho para facilitar a visualização do sprite no plano X e Y e o funcionamento do cálculo do meio.
 
+Para finalizar essa implementação, muita consulta externa a vídeos e fóruns foi necessária, considerando que houve muita dificuldade para que eu conseguisse fazer a câmera
+funcionar da maneira esperada e a documentação oficial da biblioteca não apresentava explicações detalhadas sobre o funcionamento da classe `Camera` e `OrtographicCamera`.
+
 <img width="500" height="500" src="https://github.com/user-attachments/assets/41a79eaa-0e97-4a49-bbc9-0a8574e95126" />
 
 > Resultado da implementação da câmera. Modelos placeholder.
@@ -165,7 +168,7 @@ https://javadoc.io/doc/com.badlogicgames.gdx/gdx/1.9.5/com/badlogic/gdx/graphics
 
 2.2:
 https://youtu.be/HDflWUtpd7s?si=N7C9x0Dus636L39K - LibGDX & Tiled RPG Tutorial - #10 Camera  
-https://libgdx.com/wiki/graphics/2d/orthographic-camera - Orthographic camera
+https://libgdx.com/wiki/graphics/2d/orthographic-camera - Orthographic camera  
 https://stackoverflow.com/questions/27429520/how-to-scale-sprites-in-libgdx - How to scale sprites in libgdx?  
 https://libgdx.com/wiki/graphics/viewports - Viewports  
 https://stackoverflow.com/questions/14629653/libgdx-why-doesnt-the-camera-follow-the-character - 
