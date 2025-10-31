@@ -76,9 +76,10 @@ o input das setas direcionais do teclado. Dependendo da direção, o método adi
 5 unidades, podendo ser um deslocamento positivo (para direita ou para cima) ou negativo
 (para esquerda ou para baixo) no plano. Essas variáveis são então associadas ao sprite no método que renderiza
 a tela `render()`, atualizando assim a posição do sprite na tela. 
-  
-![giphy](https://github.com/user-attachments/assets/0a305b17-7b81-4186-9a5a-a3bf2dc9437a)
-> O quadrado se move! Isso é como um "hello world!". 
+
+<img width="500" height="500" alt="sprite-plano" src="https://github.com/user-attachments/assets/0a305b17-7b81-4186-9a5a-a3bf2dc9437a" />
+
+> O quadrado se move!. 
 
 Entretanto, essa é uma maneira bem simples e desnecessária de implementar essa funcionalidade.
 O tutorial "A Simple Game" da wiki do libGDX utiliza do método da classe Sprite `translateX` (ou Y),
@@ -145,6 +146,16 @@ public void render() {
     ...
 }
 ```
+
+<img width="500" height="500" alt="sprite-plano" src="https://github.com/user-attachments/assets/38925a2a-ee52-4fcf-9dd4-5bc957c71390" />
+
+> Desenho para facilitar a visualização do sprite no plano X e Y e o funcionamento do cálculo do meio.
+
+<img width="500" height="500" src="https://github.com/user-attachments/assets/41a79eaa-0e97-4a49-bbc9-0a8574e95126" />
+
+> Resultado da implementação da câmera. Modelos placeholder.
+
+
 ## Referências
 2.1:
 https://libgdx.com/wiki/start/a-simple-game - A Simple Game  
