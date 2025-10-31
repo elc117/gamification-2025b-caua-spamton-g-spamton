@@ -6,37 +6,55 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class UniVenture extends ApplicationAdapter {
     private SpriteBatch batch;
     private FitViewport viewport;
+    private OrthographicCamera camera;
     private Texture image;
     private Texture background;
     private Texture character;
     private Sprite characterSprite;
-    private float posX, posY;
+
+    public final float WORLD_WIDTH = 16f;
+    public final float WORLD_HEIGHT = 12f;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
-        viewport = new FitViewport(8, 5);
+        camera = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT);
+        viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
         image = new Texture("libgdx.png");
         background = new Texture("background.png");
-        character = new Texture("char-placeholder.png");
+        character = new Texture("personagem-placeholder.png");
         characterSprite = new Sprite(character);
+        characterSprite.setSize(3, 3);
+        characterSprite.setPosition(0, 0);
+    }
+
+    // metodo resize: atualiza a camera de acordo com o tamanho da janela
+    public void resize(int width, int height) {
+        viewport.update(width, height, true);
     }
 
     @Override
     public void render() {
-        this.moveCharacter();
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
+        this.moveCharacter();
+
+        this.camera.position.set(characterSprite.getX() + characterSprite.getWidth() / 2,characterSprite.getY() + characterSprite.getHeight() / 2, 0);
+        this.camera.update();
+
+        batch.setProjectionMatrix(camera.combined);
+
         batch.begin();
-        batch.draw(background, 0, 0);
-        batch.draw(image, 140, 210);
-        batch.draw(characterSprite, posX, posY);
+        batch.draw(background, -WORLD_WIDTH, -WORLD_HEIGHT);
+        characterSprite.draw(batch);
         batch.end();
     }
 
@@ -44,20 +62,23 @@ public class UniVenture extends ApplicationAdapter {
     public void dispose() {
         batch.dispose();
         image.dispose();
+        background.dispose();
+        character.dispose();
     }
 
     private void moveCharacter() {
+        float speed = 0.5f;
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            posX -= 10;
+            characterSprite.translateX(-speed);
         }
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            posX += 10;
+            characterSprite.translateX(speed);
         }
         if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            posY += 10;
+            characterSprite.translateY(speed);
         }
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            posY -= 10;
+            characterSprite.translateY(-speed);
         }
     }
 }
