@@ -26,7 +26,8 @@ Se trata de um jogo lançado em 2015 e desenvolvido por um time de apenas uma pe
 O jogo contém elementos de RPG, como batalhas e itens, que não serão integrados ao projeto,
 por conta de sua complexidade, mas o seu estilo e estrutura servirão de inspiração.
 
-![giphy](https://media1.tenor.com/m/pylTHrd5YoAAAAAd/undertale-video.gif)
+<img width="500" height="500" alt="sprite-plano" src="https://media1.tenor.com/m/pylTHrd5YoAAAAAd/undertale-video.gif" />
+
 > GIF de gameplay do jogo Undertale. A movimentação do personagem do jogador e as interações com personagens não
 > jogáveis são inspirações para o projeto.
 
