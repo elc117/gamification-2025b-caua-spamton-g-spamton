@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.1-99-gec89c545" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="12">
+ <tileset firstgid="1" source="combined-tileset.tsx"/>
+ <tileset firstgid="17" source="objects.tsx"/>
+ <layer id="1" name="Camada de Blocos 1" width="30" height="20">
+  <data encoding="base64" compression="zlib">
+   eJzjZGBg4KQAM0IxJWaM2jt47WUFYrYR5F9y7WVhYFhACYbZS4beBEowkr1k6RvFo3gUk495Rxge6PCmNwYAjPsn+g==
+  </data>
+ </layer>
+ <objectgroup id="3" name="Camada de Objetos 1">
+  <object id="6" gid="17" x="12" y="69" width="64" height="64"/>
+  <object id="7" gid="17" x="105" y="69" width="64" height="64"/>
+  <object id="8" gid="17" x="187" y="70.5" width="64" height="64"/>
+  <object id="9" gid="17" x="305" y="69.5" width="64" height="64"/>
+  <object id="10" gid="17" x="401.5" y="68.5" width="64" height="64"/>
+ </objectgroup>
+</map>

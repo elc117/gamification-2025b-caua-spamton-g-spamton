@@ -4,6 +4,10 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -18,8 +22,9 @@ public class UniVenture extends ApplicationAdapter {
     private OrthographicCamera camera;
     private Texture image;
     private Texture background;
-    private Texture character;
-    private Sprite characterSprite;
+    private TiledMap tiledMap;
+    private TiledMapRenderer tiledMapRenderer;
+    private PlayerEntity playerEntity;
 
     public final float WORLD_WIDTH = 16f;
     public final float WORLD_HEIGHT = 12f;
@@ -31,10 +36,8 @@ public class UniVenture extends ApplicationAdapter {
         viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
         image = new Texture("libgdx.png");
         background = new Texture("background.png");
-        character = new Texture("personagem-placeholder.png");
-        characterSprite = new Sprite(character);
-        characterSprite.setSize(3, 3);
-        characterSprite.setPosition(0, 0);
+        tiledMap = new TmxMapLoader().load("protomap.tmx");
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
     }
 
     // metodo resize: atualiza a camera de acordo com o tamanho da janela
@@ -45,16 +48,18 @@ public class UniVenture extends ApplicationAdapter {
     @Override
     public void render() {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-        this.moveCharacter();
+        playerEntity.moveCharacter();
 
-        this.camera.position.set(characterSprite.getX() + characterSprite.getWidth() / 2,characterSprite.getY() + characterSprite.getHeight() / 2, 0);
+        //define posiçao da camera para o centro do sprite, segue
+        this.camera.position.set(playerEntity.getX() + playerEntity.getWidth() / 2,playerEntity.getY() + playerEntity.getHeight() / 2, 0);
         this.camera.update();
+        tiledMapRenderer.setView(camera);
+        tiledMapRenderer.render();
 
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-        batch.draw(background, -WORLD_WIDTH, -WORLD_HEIGHT);
-        characterSprite.draw(batch);
+        playerEntity.draw(batch);
         batch.end();
     }
 
@@ -63,22 +68,6 @@ public class UniVenture extends ApplicationAdapter {
         batch.dispose();
         image.dispose();
         background.dispose();
-        character.dispose();
     }
 
-    private void moveCharacter() {
-        float speed = 0.5f;
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            characterSprite.translateX(-speed);
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            characterSprite.translateX(speed);
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            characterSprite.translateY(speed);
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            characterSprite.translateY(-speed);
-        }
-    }
 }

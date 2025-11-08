@@ -159,6 +159,15 @@ funcionar da maneira esperada e a documentação oficial da biblioteca não apre
 
 > Resultado da implementação da câmera. Modelos placeholder.
 
+### 2.3 Refatorando o Código e Confecção do mapa 
+É importante relembrar que um dos objetivos deste trabalho é exercitar a programação
+orientada a objetos. Até agora, as funcionalidades do projeto foram todas implementadas na
+classe main, visando apenas testar se estavam sendo funcionando corretamente. Entretanto, essa
+forma de organização de código, embora possa funcionar, ignora características importantes de 
+linguagens orientadas a objetos, como o encapsulamento de dados e operações em classes. 
+  
+
+
 
 ## Referências
 2.1:

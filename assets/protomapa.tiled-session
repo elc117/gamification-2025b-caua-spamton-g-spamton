@@ -1,0 +1,59 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "protomap.tmx",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "combined-tileset.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "objects.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "objetos.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "protomap.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 255.66666666666666,
+                "y": 31.666666666666686
+            }
+        }
+    },
+    "last.imagePath": "/home/caua/gamification-2025b-caua-spamton-g-spamton/assets",
+    "map.lastUsedFormat": "tmx",
+    "map.layerDataFormat": null,
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "openFiles": [
+        "protomap.tmx",
+        "combined-tileset.tsx",
+        "objects.tsx"
+    ],
+    "project": "protomapa.tiled-project",
+    "recentFiles": [
+        "objects.tsx",
+        "combined-tileset.tsx",
+        "protomap.tmx",
+        "objetos.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.margin": 4,
+    "tileset.spacing": 8,
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    },
+    "tileset.type": 1
+}
