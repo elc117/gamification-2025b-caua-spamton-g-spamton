@@ -159,14 +159,31 @@ funcionar da maneira esperada e a documentação oficial da biblioteca não apre
 
 > Resultado da implementação da câmera. Modelos placeholder.
 
-### 2.3 Refatorando o Código e Confecção do mapa 
+### 2.3 Refatorando o Código e Definindo as telas
 É importante relembrar que um dos objetivos deste trabalho é exercitar a programação
 orientada a objetos. Até agora, as funcionalidades do projeto foram todas implementadas na
 classe main, visando apenas testar se estavam sendo funcionando corretamente. Entretanto, essa
 forma de organização de código, embora possa funcionar, ignora características importantes de 
 linguagens orientadas a objetos, como o encapsulamento de dados e operações em classes. 
-  
 
+Comecei tentando refatorar com base no repositório do jogo "Jardim Botânico Quest", da GameJam
+passada, entretanto não consegui identificar claramente o que fazer para mover os metódos da classe main
+para outras classes de maneira coesa. Assim, resolvi aprender através da série de vídeos "LibGDX & Tiled RPG
+Tutorial", no Youtube (O link dos vídeos utilizados como referência para o trabalho estão listados na seção
+de referências). Para isso, tive que refazer algumas funcionalidades desde o ínicio para conseguir
+acomodá-las em diferentes classes.  
+O primeiro passo foi definir uma classe para as telas do jogo. No libGDX, telas são responsáveis
+por renderizar e processar um aspecto do jogo, como a tela de menu, a tela de jogo, etc. Através da implementação
+de classes "tela", podemos mover a renderização de sprites e mapas para uma classe dedicada, que lida com cada situação
+da maneira adequada (muda o mapa e os sprites conforme a localização do jogador, por exemplo). Para renderizar o jogo,
+são necessários objetos `camera`, `viewport` (da classe Viewport, define os "limites" da área da câmera), 
+`map`(No projeto estão sendo utilizados tiled maps. Esse tipo de mapa será explicado posteriormente) 
+e `bash` (da classe Bash, fundamental para renderização).  
+Conforme mostrado no vídeo, foi implementado também um cache para armazenar as instâncias das telas
+no jogo para economizar certo tempo de processamento e memória na hora de mudar de tela.
+
+
+### 2.x Confecção do mapa
 
 
 ## Referências
@@ -182,3 +199,5 @@ https://stackoverflow.com/questions/27429520/how-to-scale-sprites-in-libgdx - Ho
 https://libgdx.com/wiki/graphics/viewports - Viewports  
 https://stackoverflow.com/questions/14629653/libgdx-why-doesnt-the-camera-follow-the-character - 
 libgdx why doesn't the Camera follow the character?
+
+2.3: https://libgdx.com/wiki/start/simple-game-extended - Extending the Simple Game 
