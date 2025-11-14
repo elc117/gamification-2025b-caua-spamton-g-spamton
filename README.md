@@ -180,8 +180,43 @@ são necessários objetos `camera`, `viewport` (da classe Viewport, define os "l
 `map`(No projeto estão sendo utilizados tiled maps. Esse tipo de mapa será explicado posteriormente) 
 e `bash` (da classe Bash, fundamental para renderização).  
 Conforme mostrado no vídeo, foi implementado também um cache para armazenar as instâncias das telas
-no jogo para economizar certo tempo de processamento e memória na hora de mudar de tela.
+no jogo e economizar certo tempo de processamento e memória na hora de mudar de tela. Esse cache utiliza uma estrutura
+hash map para manter telas já criadas em memória e possibilitar sua reutilização. O código relacionado funciona da seguinte
+maneira:
 
+```java
+ private final Map<Class<? extends Screen>, Screen> screenCache = new HashMap<Class<? extends Screen>, Screen>();
+```
+- Essa linha de código é bem extensa e apresenta várias funcionalidades que eu não havia visto antes, então tive que
+pesquisar sobre hash tables e como elas são aplicadas em java. 
+- Basicamente, ela declara a variável `screenCache` que servirá como o cache de telas, através da interface `Map`, utilizada
+para representar uma estrutura chave-valor. 
+- Dentro das chaves desse `Map`, `Class<? extends Screen>` representa qualquer classe que herde de 
+`Screen`, e essa classe é a chave. 
+- `Screen` é o valor que armazena a instância real da tela. 
+- É então definido o hash map de `screenCache` através do método `HashMap` da classe `Map`.
+
+```java
+  public void addScreen(Screen screen) {
+
+        screenCache.put(screen.getClass(), screen);
+    }
+```
+- Esse método é simples e somente adiciona uma tela ao cache de telas, utilizando como chave da tela a ser 
+adicionada sua própria classe. Cada tela é diretamente associada à sua classe, ou seja, utilizar um método para
+definir a tela atual, basta especificar a classe da tela, sem a necessidade de um objeto único para a tela.
+
+```java
+   public void setScreen(Class<? extends Screen> screenClass) {
+        Screen screen = screenCache.get(screenClass);
+        if (screen == null) {
+            throw new GdxRuntimeException("Screen " + screenClass.getSimpleName() + " not found in cache");
+        }
+        super.setScreen(screen);
+    }
+```
+- Esse método recebe uma classe de tela, busca a tela associada a esta classe no cache, e define a tela atual como 
+esta, se existir. 
 
 ### 2.x Confecção do mapa
 
@@ -200,4 +235,8 @@ https://libgdx.com/wiki/graphics/viewports - Viewports
 https://stackoverflow.com/questions/14629653/libgdx-why-doesnt-the-camera-follow-the-character - 
 libgdx why doesn't the Camera follow the character?
 
-2.3: https://libgdx.com/wiki/start/simple-game-extended - Extending the Simple Game 
+2.3: https://libgdx.com/wiki/start/simple-game-extended - Extending the Simple Game  
+https://www-w3schools-com.translate.goog/java/ref_hashmap_put.asp?_x_tr_sl=en&_x_tr_tl=pt&_x_tr_hl=pt&_x_tr_pto=tc -
+Java HashMap put() Method  
+https://www.w3schools.com/java/java_hashmap.asp - Java HashMap  
+https://github.com/elc117/game-2024b-vmferreira - Repositório Jardim Botânico Quest

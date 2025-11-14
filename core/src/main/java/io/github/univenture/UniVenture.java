@@ -17,7 +17,7 @@ import java.util.Map;
 public class UniVenture extends Game {
     public static final float WORLD_WIDTH = 16f;
     public static final float WORLD_HEIGHT = 9f;
-    public static final float UNIT_SCALE = 1f/16f;
+    public static final float UNIT_SCALE = 1f/16f; // unidades de medida sao representadas por base 16
 
     private Batch batch; //para render
     private OrthographicCamera camera; //camera top-down
@@ -43,6 +43,7 @@ public class UniVenture extends Game {
     }
 
     public void addScreen(Screen screen) {
+
         screenCache.put(screen.getClass(), screen);
     }
 
