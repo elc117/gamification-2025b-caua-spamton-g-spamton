@@ -1,17 +1,7 @@
 
-buildscript {
-  repositories {
-    mavenCentral()
-  }
-  dependencies {
-    classpath 'org.gretty:gretty:3.1.5'
-    classpath "org.docstr:gwt-gradle-plugin:$gwtPluginVersion"
-
-  }
-}
-apply plugin: "gwt"
 apply plugin: "war"
 apply plugin: "org.gretty"
+apply plugin: 'org.wisepersist.gwt' // Este é o único plugin GWT que você deve aplicar
 
 gwt {
   gwtVersion = "$gwtFrameworkVersion" // Should match the version used for building the GWT backend. See gradle.properties.
@@ -29,20 +19,20 @@ gwt {
   //// The next line can be useful to uncomment if you want output that hasn't been obfuscated.
 //  compiler.style = org.docstr.gradle.plugins.gwt.Style.DETAILED
 
-  sourceLevel = 1.11
+  sourceLevel = 1.8
 }
 
 dependencies {
+  implementation project(":core")
+  implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
   implementation "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
-  implementation "com.github.tommyettinger:gdx-backend-gwt:1.1210.1"
-  implementation "com.github.tommyettinger:gdx-backend-gwt:1.1210.1:sources"
-  implementation "com.google.jsinterop:jsinterop-annotations:2.0.2:sources"
-  implementation project(':core')
-
+  implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
+  implementation "com.google.gwt:gwt-user:$gwtFrameworkVersion"
 }
 
+
 import org.akhikhl.gretty.AppBeforeIntegrationTestTask
-import org.docstr.gradle.plugins.gwt.GwtSuperDev
+import org.wisepersist.gradle.plugins.gwt.GwtSuperDev
 
 gretty.httpPort = 8080
 // The line below will need to be changed only if you change the build directory to something other than "build".
@@ -157,8 +147,8 @@ tasks.compileGwt.dependsOn("addSource")
 tasks.draftCompileGwt.dependsOn("addSource")
 tasks.checkGwt.dependsOn("addSource")
 
-java.sourceCompatibility = JavaVersion.VERSION_11
-java.targetCompatibility = JavaVersion.VERSION_11
+java.sourceCompatibility = JavaVersion.VERSION_1_8
+java.targetCompatibility = JavaVersion.VERSION_1_8
 sourceSets.main.java.srcDirs = [ "src/main/java/" ]
 
 eclipse.project.name = appName + "-html"

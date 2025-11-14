@@ -1,0 +1,186 @@
+<html>
+<head>
+<title>build.gradle</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #c3cee3;}
+.s1 { color: #89ddff;}
+.s2 { color: #c3e88d;}
+.s3 { color: #005454; font-style: italic;}
+.s4 { color: #c792ea; font-style: italic;}
+.s5 { color: #f78c6c;}
+</style>
+</head>
+<body bgcolor="#002828">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+build.gradle</font>
+</center></td></tr></table>
+<pre>
+<span class="s0">buildscript </span><span class="s1">{</span>
+  <span class="s0">repositories </span><span class="s1">{</span>
+    <span class="s0">mavenCentral</span><span class="s1">()</span>
+  <span class="s1">}</span>
+  <span class="s0">dependencies </span><span class="s1">{</span>
+    <span class="s0">classpath </span><span class="s2">'org.gretty:gretty:3.1.5'</span>
+    <span class="s0">classpath </span><span class="s2">&quot;org.docstr:gwt-gradle-plugin:</span><span class="s0">$gwtPluginVersion</span><span class="s2">&quot;</span>
+
+  <span class="s1">}</span>
+<span class="s1">}</span>
+<span class="s0">apply plugin: </span><span class="s2">&quot;gwt&quot;</span>
+<span class="s0">apply plugin: </span><span class="s2">&quot;war&quot;</span>
+<span class="s0">apply plugin: </span><span class="s2">&quot;org.gretty&quot;</span>
+
+<span class="s0">gwt </span><span class="s1">{</span>
+  <span class="s0">gwtVersion </span><span class="s1">= </span><span class="s2">&quot;</span><span class="s0">$gwtFrameworkVersion</span><span class="s2">&quot; </span><span class="s3">// Should match the version used for building the GWT backend. See gradle.properties.</span>
+  <span class="s0">maxHeapSize </span><span class="s1">= </span><span class="s2">'1G' </span><span class="s3">// Default 256m is not enough for the GWT compiler. GWT is HUNGRY.</span>
+  <span class="s0">minHeapSize </span><span class="s1">= </span><span class="s2">'1G'</span>
+
+  <span class="s3">// Needs to be in front of &quot;modules&quot; below.</span>
+  <span class="s0">src </span><span class="s1">= </span><span class="s0">files</span><span class="s1">(</span><span class="s0">file</span><span class="s1">(</span><span class="s2">'src/main/java'</span><span class="s1">)</span><span class="s0">, project</span><span class="s1">(</span><span class="s2">&quot;:core&quot;</span><span class="s1">)</span><span class="s0">.file</span><span class="s1">(</span><span class="s2">'src/main/java'</span><span class="s1">))</span>
+  <span class="s0">modules </span><span class="s1">+= [</span><span class="s2">&quot;io.github.univenture.GdxDefinition&quot;</span><span class="s1">]</span>
+  <span class="s0">devModules </span><span class="s1">+= [</span><span class="s2">&quot;io.github.univenture.GdxDefinitionSuperdev&quot;</span><span class="s1">]</span>
+  <span class="s0">project.webAppDirName </span><span class="s1">= </span><span class="s2">&quot;webapp&quot;</span>
+
+  <span class="s0">compiler.strict </span><span class="s1">= </span><span class="s4">true</span>
+  <span class="s0">compiler.disableCastChecking </span><span class="s1">= </span><span class="s4">true</span>
+  <span class="s3">//// The next line can be useful to uncomment if you want output that hasn't been obfuscated.</span>
+<span class="s3">//  compiler.style = org.docstr.gradle.plugins.gwt.Style.DETAILED</span>
+
+  <span class="s0">sourceLevel </span><span class="s1">= </span><span class="s5">1.11</span>
+<span class="s1">}</span>
+
+<span class="s0">dependencies </span><span class="s1">{</span>
+  <span class="s0">implementation </span><span class="s2">&quot;com.badlogicgames.gdx:gdx:</span><span class="s0">$gdxVersion</span><span class="s2">:sources&quot;</span>
+  <span class="s0">implementation </span><span class="s2">&quot;com.github.tommyettinger:gdx-backend-gwt:1.1210.1&quot;</span>
+  <span class="s0">implementation </span><span class="s2">&quot;com.github.tommyettinger:gdx-backend-gwt:1.1210.1:sources&quot;</span>
+  <span class="s0">implementation </span><span class="s2">&quot;com.google.jsinterop:jsinterop-annotations:2.0.2:sources&quot;</span>
+  <span class="s0">implementation project</span><span class="s1">(</span><span class="s2">':core'</span><span class="s1">)</span>
+
+<span class="s1">}</span>
+
+<span class="s4">import </span><span class="s0">org.akhikhl.gretty.AppBeforeIntegrationTestTask</span>
+<span class="s4">import </span><span class="s0">org.docstr.gradle.plugins.gwt.GwtSuperDev</span>
+
+<span class="s0">gretty.httpPort </span><span class="s1">= </span><span class="s5">8080</span>
+<span class="s3">// The line below will need to be changed only if you change the build directory to something other than &quot;build&quot;.</span>
+<span class="s0">gretty.resourceBase </span><span class="s1">= </span><span class="s2">&quot;</span><span class="s0">$</span><span class="s1">{</span><span class="s0">project.layout.buildDirectory.asFile.get</span><span class="s1">()</span><span class="s0">.absolutePath</span><span class="s1">}</span><span class="s2">/gwt/draftOut&quot;</span>
+<span class="s0">gretty.contextPath </span><span class="s1">= </span><span class="s2">&quot;/&quot;</span>
+<span class="s0">gretty.portPropertiesFileName </span><span class="s1">= </span><span class="s2">&quot;TEMP_PORTS.properties&quot;</span>
+
+<span class="s0">tasks.register</span><span class="s1">(</span><span class="s2">'startHttpServer'</span><span class="s1">) {</span>
+  <span class="s0">dependsOn</span><span class="s1">(</span><span class="s2">&quot;draftCompileGwt&quot;</span><span class="s1">)</span>
+  <span class="s0">doFirst </span><span class="s1">{</span>
+    <span class="s0">copy </span><span class="s1">{</span>
+      <span class="s0">from </span><span class="s2">&quot;webapp&quot;</span>
+      <span class="s0">into gretty.resourceBase</span>
+    <span class="s1">}</span>
+    <span class="s0">copy </span><span class="s1">{</span>
+      <span class="s0">from </span><span class="s2">&quot;war&quot;</span>
+      <span class="s0">into gretty.resourceBase</span>
+    <span class="s1">}</span>
+  <span class="s1">}</span>
+<span class="s1">}</span>
+
+<span class="s0">tasks.register</span><span class="s1">(</span><span class="s2">'beforeRun'</span><span class="s0">, AppBeforeIntegrationTestTask</span><span class="s1">) {</span>
+  <span class="s0">dependsOn</span><span class="s1">(</span><span class="s2">&quot;startHttpServer&quot;</span><span class="s1">)</span>
+  <span class="s0">gretty </span><span class="s1">{</span>
+    <span class="s0">integrationTestTask</span><span class="s1">(</span><span class="s2">&quot;superDev&quot;</span><span class="s1">)</span>
+  <span class="s1">}</span>
+  <span class="s3">// The next line allows ports to be reused instead of</span>
+  <span class="s3">// needing a process to be manually terminated.</span>
+  <span class="s0">file</span><span class="s1">(</span><span class="s2">&quot;build/TEMP_PORTS.properties&quot;</span><span class="s1">)</span><span class="s0">.delete</span><span class="s1">()</span>
+  <span class="s0">interactive </span><span class="s1">= </span><span class="s4">false</span>
+<span class="s1">}</span>
+
+<span class="s0">tasks.register</span><span class="s1">(</span><span class="s2">'superDev'</span><span class="s0">, GwtSuperDev</span><span class="s1">) {</span>
+  <span class="s0">group</span><span class="s1">(</span><span class="s2">&quot;gwt&quot;</span><span class="s1">)</span>
+  <span class="s0">dependsOn</span><span class="s1">(</span><span class="s2">&quot;beforeRun&quot;</span><span class="s1">)</span>
+  <span class="s0">doFirst </span><span class="s1">{</span>
+    <span class="s0">gwt.modules </span><span class="s1">= </span><span class="s0">gwt.devModules</span>
+  <span class="s1">}</span>
+<span class="s1">}</span>
+
+<span class="s3">//// We delete the (temporary) war/ folder because if any extra files get into it, problems occur.</span>
+<span class="s3">//// The war/ folder shouldn't be committed to version control.</span>
+<span class="s0">clean.delete </span><span class="s1">+= [</span><span class="s0">file</span><span class="s1">(</span><span class="s2">&quot;war&quot;</span><span class="s1">)]</span>
+
+<span class="s3">// This next line can be changed if you want to, for instance, always build into the</span>
+<span class="s3">// docs/ folder of a Git repo, which can be set to automatically publish on GitHub Pages.</span>
+<span class="s3">// This is relative to the html/ folder.</span>
+<span class="s4">var </span><span class="s0">outputPath </span><span class="s1">= </span><span class="s2">&quot;build/dist/&quot;</span>
+
+<span class="s0">tasks.register</span><span class="s1">(</span><span class="s2">'dist'</span><span class="s1">) {</span>
+  <span class="s0">dependsOn</span><span class="s1">([</span><span class="s2">&quot;clean&quot;</span><span class="s0">, </span><span class="s2">&quot;compileGwt&quot;</span><span class="s1">])</span>
+  <span class="s0">doLast </span><span class="s1">{</span>
+    <span class="s3">// Uncomment the next line if you have changed outputPath and know that its contents</span>
+    <span class="s3">// should be replaced by a new dist build. Some large JS files are not cleaned up by</span>
+    <span class="s3">// default unless the outputPath is inside build/ (then the clean task removes them).</span>
+    <span class="s3">// Do not uncomment the next line if you changed outputPath to a folder that has</span>
+    <span class="s3">// non-generated files that you want to keep!</span>
+    <span class="s3">//delete(file(outputPath))</span>
+
+    <span class="s0">file</span><span class="s1">(</span><span class="s0">outputPath</span><span class="s1">)</span><span class="s0">.mkdirs</span><span class="s1">()</span>
+    <span class="s0">copy </span><span class="s1">{</span>
+      <span class="s0">from</span><span class="s1">(</span><span class="s2">&quot;build/gwt/out&quot;</span><span class="s1">) {</span>
+        <span class="s0">exclude </span><span class="s2">'**/*.symbolMap' </span><span class="s3">// Not used by a dist, and these can be large.</span>
+      <span class="s1">}</span>
+      <span class="s0">into outputPath</span>
+    <span class="s1">}</span>
+    <span class="s0">copy </span><span class="s1">{</span>
+      <span class="s0">from</span><span class="s1">(</span><span class="s2">&quot;webapp&quot;</span><span class="s1">) {</span>
+        <span class="s0">exclude </span><span class="s2">'index.html' </span><span class="s3">// We edit this HTML file later.</span>
+        <span class="s0">exclude </span><span class="s2">'refresh.png' </span><span class="s3">// We don't need this button; this saves some bytes.</span>
+      <span class="s1">}</span>
+      <span class="s0">into outputPath</span>
+    <span class="s1">}</span>
+    <span class="s0">copy </span><span class="s1">{</span>
+      <span class="s0">from</span><span class="s1">(</span><span class="s2">&quot;webapp&quot;</span><span class="s1">) {</span>
+        <span class="s3">// These next two lines take the index.html page and remove the superdev refresh button.</span>
+        <span class="s0">include </span><span class="s2">'index.html'</span>
+        <span class="s0">filter </span><span class="s1">{ </span><span class="s0">String line -&gt; line.replaceAll</span><span class="s1">(</span><span class="s2">'&lt;a class=&quot;superdev&quot; .+'</span><span class="s0">, </span><span class="s2">''</span><span class="s1">) }</span>
+        <span class="s3">// This does not modify the original index.html, only the copy in the dist.</span>
+        <span class="s3">// If you decide to manually remove or comment out the superdev button from index.html, you should also</span>
+        <span class="s3">// either remove or comment out only the &quot;filter&quot; line above this.</span>
+      <span class="s1">}</span>
+      <span class="s0">into outputPath</span>
+    <span class="s1">}</span>
+    <span class="s0">copy </span><span class="s1">{</span>
+      <span class="s0">from </span><span class="s2">&quot;war&quot;</span>
+      <span class="s0">into outputPath</span>
+    <span class="s1">}</span>
+  <span class="s1">}</span>
+<span class="s1">}</span>
+
+<span class="s0">tasks.register</span><span class="s1">(</span><span class="s2">'addSource'</span><span class="s1">) {</span>
+  <span class="s0">doLast </span><span class="s1">{</span>
+    <span class="s0">sourceSets.main.compileClasspath </span><span class="s1">+= </span><span class="s0">files</span><span class="s1">(</span><span class="s0">project</span><span class="s1">(</span><span class="s2">':core'</span><span class="s1">)</span><span class="s0">.sourceSets.main.allJava.srcDirs</span><span class="s1">)</span>
+    <span class="s0">sourceSets.main.compileClasspath </span><span class="s1">+= </span><span class="s0">files</span><span class="s1">(</span><span class="s2">&quot;../core/build/generated/sources/annotationProcessor/java/main&quot;</span><span class="s1">)</span>
+    <span class="s0">sourceSets.main.compileClasspath </span><span class="s1">+= </span><span class="s0">files</span><span class="s1">(</span><span class="s0">sourceSets.main.output.resourcesDir</span><span class="s1">)</span>
+
+  <span class="s1">}</span>
+<span class="s1">}</span>
+
+<span class="s0">tasks.register</span><span class="s1">(</span><span class="s2">&quot;distZip&quot;</span><span class="s0">, Zip</span><span class="s1">) {</span>
+  <span class="s0">dependsOn</span><span class="s1">(</span><span class="s2">&quot;dist&quot;</span><span class="s1">)</span>
+  <span class="s3">//// This uses the output of the dist task, which removes the superdev button from index.html .</span>
+  <span class="s0">from</span><span class="s1">(</span><span class="s0">outputPath</span><span class="s1">)</span>
+  <span class="s0">archiveVersion </span><span class="s1">= </span><span class="s0">projectVersion</span>
+  <span class="s0">archiveBaseName.set</span><span class="s1">(</span><span class="s2">&quot;</span><span class="s0">$</span><span class="s1">{</span><span class="s0">appName</span><span class="s1">}</span><span class="s2">-dist&quot;</span><span class="s1">)</span>
+  <span class="s3">//// The result will be in html/build/ with a name containing &quot;-dist&quot;.</span>
+  <span class="s0">destinationDirectory.set</span><span class="s1">(</span><span class="s0">file</span><span class="s1">(</span><span class="s2">&quot;build&quot;</span><span class="s1">))</span>
+<span class="s1">}</span>
+
+<span class="s0">tasks.compileGwt.dependsOn</span><span class="s1">(</span><span class="s2">&quot;addSource&quot;</span><span class="s1">)</span>
+<span class="s0">tasks.draftCompileGwt.dependsOn</span><span class="s1">(</span><span class="s2">&quot;addSource&quot;</span><span class="s1">)</span>
+<span class="s0">tasks.checkGwt.dependsOn</span><span class="s1">(</span><span class="s2">&quot;addSource&quot;</span><span class="s1">)</span>
+
+<span class="s0">java.sourceCompatibility </span><span class="s1">= </span><span class="s0">JavaVersion.VERSION_11</span>
+<span class="s0">java.targetCompatibility </span><span class="s1">= </span><span class="s0">JavaVersion.VERSION_11</span>
+<span class="s0">sourceSets.main.java.srcDirs </span><span class="s1">= [ </span><span class="s2">&quot;src/main/java/&quot; </span><span class="s1">]</span>
+
+<span class="s0">eclipse.project.name </span><span class="s1">= </span><span class="s0">appName </span><span class="s1">+ </span><span class="s2">&quot;-html&quot;</span>
+</pre>
+</body>
+</html>

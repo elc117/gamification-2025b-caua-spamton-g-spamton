@@ -1,0 +1,60 @@
+<html>
+<head>
+<title>GdxDefinition.gwt.xml</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #c3cee3;}
+.s1 { color: #ffcb6b; font-style: italic;}
+.s2 { color: #89ddff;}
+.s3 { color: #c3e88d;}
+.s4 { color: #c3cee3;}
+.s5 { color: #f07178;}
+.s6 { color: #f07178;}
+.s7 { color: #005454; font-style: italic;}
+</style>
+</head>
+<body bgcolor="#002828">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+GdxDefinition.gwt.xml</font>
+</center></td></tr></table>
+<pre><span class="s0">&lt;?</span><span class="s1">xml version</span><span class="s3">=&quot;1.0&quot; </span><span class="s1">encoding</span><span class="s3">=&quot;UTF-8&quot;</span><span class="s0">?&gt;</span>
+<span class="s5">&lt;!DOCTYPE </span><span class="s1">module </span><span class="s5">PUBLIC </span><span class="s3">&quot;-//Google Inc.//DTD Google Web Toolkit 2.11.0//EN&quot; &quot;https://www.gwtproject.org/doctype/2.11.0/gwt-module.dtd&quot;</span><span class="s6">&gt;</span>
+<span class="s2">&lt;</span><span class="s5">module </span><span class="s1">rename-to</span><span class="s3">=&quot;html&quot;</span><span class="s2">&gt;</span>
+  <span class="s7">&lt;!-- Paths to source are relative to this file and separated by slashes ('/'). --&gt;</span>
+  <span class="s2">&lt;</span><span class="s5">source </span><span class="s1">path</span><span class="s3">=&quot;&quot; </span><span class="s2">/&gt;</span>
+
+  <span class="s7">&lt;!-- Any resources placed under package public_html, relative to this file, will be copied verbatim into the final webapp folder. --&gt;</span>
+  <span class="s7">&lt;!-- This is where you can place your JavaScript, CSS and other resources for advanced JS integration. --&gt;</span>
+  <span class="s2">&lt;</span><span class="s5">public </span><span class="s1">path</span><span class="s3">=&quot;public_html&quot; </span><span class="s2">/&gt;</span>
+
+  <span class="s7">&lt;!-- &quot;Inherits&quot; lines are how GWT knows where to look for code and configuration in other projects or libraries. --&gt;</span>
+  <span class="s2">&lt;</span><span class="s5">inherits </span><span class="s1">name</span><span class="s3">=&quot;com.badlogic.gdx.backends.gdx_backends_gwt&quot; </span><span class="s2">/&gt;</span>
+  <span class="s2">&lt;</span><span class="s5">inherits </span><span class="s1">name</span><span class="s3">=&quot;io.github.univenture.UniVenture&quot; </span><span class="s2">/&gt;</span>
+
+  <span class="s7">&lt;!-- You must change this if you rename packages later, or rename GwtLauncher. --&gt;</span>
+  <span class="s2">&lt;</span><span class="s5">entry-point </span><span class="s1">class</span><span class="s3">=&quot;io.github.univenture.gwt.GwtLauncher&quot; </span><span class="s2">/&gt;</span>
+
+  <span class="s7">&lt;!-- Reflection includes may be needed for your code or library code. Each value is separated by periods ('.'). --&gt;</span>
+  <span class="s7">&lt;!-- You can include a full package by not including the name of a type at the end. --&gt;</span>
+  <span class="s7">&lt;!-- This is a feature of libGDX, so these lines go after the above &quot;inherits&quot; that brings in libGDX. --&gt;</span>
+  <span class="s7">&lt;!-- &lt;extend-configuration-property name=&quot;gdx.reflect.include&quot; value=&quot;fully.qualified.TypeName&quot; /&gt; --&gt;</span>
+
+  <span class="s7">&lt;!-- Rarely, projects may need to include files but do not have access to the complete assets. --&gt;</span>
+  <span class="s7">&lt;!-- This happens for libraries and shared projects, typically, and the configuration goes in that project. --&gt;</span>
+  <span class="s7">&lt;!-- The value is a path, separated by forward slashes, where the root is your html project's resources root. --&gt;</span>
+  <span class="s7">&lt;!-- You can include individual files like this, and access them with Gdx.files.classpath(&quot;path/to/file.png&quot;) : --&gt;</span>
+  <span class="s7">&lt;!-- This is also a feature of libGDX, so these lines go after the above &quot;inherits&quot; that brings in libGDX. --&gt;</span>
+  <span class="s7">&lt;!-- &lt;extend-configuration-property name=&quot;gdx.files.classpath&quot; value=&quot;path/to/file.png&quot; /&gt; --&gt;</span>
+
+  <span class="s7">&lt;!-- You usually won't need to make changes to the rest of this. --&gt;</span>
+  <span class="s2">&lt;</span><span class="s5">set-configuration-property </span><span class="s1">name</span><span class="s3">=&quot;gdx.assetpath&quot; </span><span class="s1">value</span><span class="s3">=&quot;../assets&quot; </span><span class="s2">/&gt;</span>
+  <span class="s2">&lt;</span><span class="s5">set-configuration-property </span><span class="s1">name</span><span class="s3">=&quot;xsiframe.failIfScriptTag&quot; </span><span class="s1">value</span><span class="s3">=&quot;FALSE&quot;</span><span class="s2">/&gt;</span>
+  <span class="s7">&lt;!-- These two lines reduce the work GWT has to do during compilation and also shrink output size. --&gt;</span>
+  <span class="s2">&lt;</span><span class="s5">set-property </span><span class="s1">name</span><span class="s3">=&quot;user.agent&quot; </span><span class="s1">value</span><span class="s3">=&quot;gecko1_8, safari&quot;</span><span class="s2">/&gt;</span>
+  <span class="s2">&lt;</span><span class="s5">collapse-property </span><span class="s1">name</span><span class="s3">=&quot;user.agent&quot; </span><span class="s1">values</span><span class="s3">=&quot;*&quot; </span><span class="s2">/&gt;</span>
+  <span class="s7">&lt;!-- Remove the &quot;user.agent&quot; lines above if you encounter issues with Safari or other Gecko browsers. --&gt;</span>
+<span class="s2">&lt;/</span><span class="s5">module</span><span class="s2">&gt;</span></pre>
+</body>
+</html>

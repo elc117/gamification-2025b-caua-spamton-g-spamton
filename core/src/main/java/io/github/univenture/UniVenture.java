@@ -17,9 +17,9 @@ import java.util.Map;
 public class UniVenture extends Game {
     public static final float WORLD_WIDTH = 16f;
     public static final float WORLD_HEIGHT = 9f;
-    public static final float UNIT_SCALE = 1f/16f;
+    public static final float UNIT_SCALE = 1f/16f; // unidades de medida sao representadas por base 16
 
-    private Batch batch; //para render
+    private SpriteBatch batch; //para render
     private OrthographicCamera camera; //camera top-down
     private Viewport viewport;
     private AssetManager manager;
@@ -34,7 +34,9 @@ public class UniVenture extends Game {
         this.viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
 
         addScreen(new GameScreen(this));
-        setScreen(GameScreen.class);
+        addScreen(new MenuScreen(this));
+
+        setScreen(MenuScreen.class);
     }
 
     @Override
@@ -60,7 +62,7 @@ public class UniVenture extends Game {
         this.batch.dispose();
     }
 
-    public Batch getBatch() {
+    public SpriteBatch getBatch() {
         return batch;
     }
 

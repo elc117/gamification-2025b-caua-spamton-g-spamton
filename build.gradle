@@ -5,10 +5,12 @@ buildscript {
     mavenLocal()
     google()
     maven { url 'https://central.sonatype.com/repository/maven-snapshots/' }
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    maven { url "https://oss.sonatype.org/content/repositories/releases/" }
   }
   dependencies {
-
-
+    classpath 'org.wisepersist:gwt-gradle-plugin:1.1.18'
+    classpath 'org.gretty:gretty:3.1.5' // <-- ADICIONE ESTA LINHA (movida do html)
   }
 }
 

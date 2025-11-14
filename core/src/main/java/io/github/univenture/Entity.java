@@ -1,6 +1,7 @@
 package io.github.univenture;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 public class Entity {
@@ -20,7 +21,9 @@ public class Entity {
         size = new Vector2(32, 32);
     }
 
-    public void setPosition(Vector2 position) {
-        this.position = position;
+    public void draw(SpriteBatch batch) {
+        float x = position.x - size.x / 2.0f;
+        float y = position.y;
+        batch.draw(texture, x, y);
     }
 }

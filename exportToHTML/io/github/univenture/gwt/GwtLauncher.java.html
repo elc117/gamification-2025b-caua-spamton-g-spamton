@@ -1,0 +1,47 @@
+<html>
+<head>
+<title>GwtLauncher.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #c792ea; font-style: italic;}
+.s1 { color: #c3cee3;}
+.s2 { color: #89ddff;}
+.s3 { color: #005454; font-style: italic;}
+.s4 { color: #f78c6c;}
+</style>
+</head>
+<body bgcolor="#002828">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+GwtLauncher.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">io</span><span class="s2">.</span><span class="s1">github</span><span class="s2">.</span><span class="s1">univenture</span><span class="s2">.</span><span class="s1">gwt</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">badlogic</span><span class="s2">.</span><span class="s1">gdx</span><span class="s2">.</span><span class="s1">ApplicationListener</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">badlogic</span><span class="s2">.</span><span class="s1">gdx</span><span class="s2">.</span><span class="s1">backends</span><span class="s2">.</span><span class="s1">gwt</span><span class="s2">.</span><span class="s1">GwtApplication</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">badlogic</span><span class="s2">.</span><span class="s1">gdx</span><span class="s2">.</span><span class="s1">backends</span><span class="s2">.</span><span class="s1">gwt</span><span class="s2">.</span><span class="s1">GwtApplicationConfiguration</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">io</span><span class="s2">.</span><span class="s1">github</span><span class="s2">.</span><span class="s1">univenture</span><span class="s2">.</span><span class="s1">UniVenture</span><span class="s2">;</span>
+
+<span class="s3">/** Launches the GWT application. */</span>
+<span class="s0">public class </span><span class="s1">GwtLauncher </span><span class="s0">extends </span><span class="s1">GwtApplication </span><span class="s2">{</span>
+        <span class="s1">@Override</span>
+        <span class="s0">public </span><span class="s1">GwtApplicationConfiguration getConfig </span><span class="s2">() {</span>
+            <span class="s3">// Resizable application, uses available space in browser with no padding:</span>
+            <span class="s1">GwtApplicationConfiguration cfg </span><span class="s2">= </span><span class="s0">new </span><span class="s1">GwtApplicationConfiguration</span><span class="s2">(</span><span class="s0">true</span><span class="s2">);</span>
+            <span class="s1">cfg</span><span class="s2">.</span><span class="s1">padVertical </span><span class="s2">= </span><span class="s4">0</span><span class="s2">;</span>
+            <span class="s1">cfg</span><span class="s2">.</span><span class="s1">padHorizontal </span><span class="s2">= </span><span class="s4">0</span><span class="s2">;</span>
+            <span class="s0">return </span><span class="s1">cfg</span><span class="s2">;</span>
+            <span class="s3">// If you want a fixed size application, comment out the above resizable section,</span>
+            <span class="s3">// and uncomment below:</span>
+            <span class="s3">//return new GwtApplicationConfiguration(640, 480);</span>
+        <span class="s2">}</span>
+
+        <span class="s1">@Override</span>
+        <span class="s0">public </span><span class="s1">ApplicationListener createApplicationListener </span><span class="s2">() {</span>
+            <span class="s0">return new </span><span class="s1">UniVenture</span><span class="s2">();</span>
+        <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

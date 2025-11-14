@@ -180,11 +180,223 @@ são necessários objetos `camera`, `viewport` (da classe Viewport, define os "l
 `map`(No projeto estão sendo utilizados tiled maps. Esse tipo de mapa será explicado posteriormente) 
 e `bash` (da classe Bash, fundamental para renderização).  
 Conforme mostrado no vídeo, foi implementado também um cache para armazenar as instâncias das telas
-no jogo para economizar certo tempo de processamento e memória na hora de mudar de tela.
+no jogo e economizar certo tempo de processamento e memória na hora de mudar de tela. Esse cache utiliza uma estrutura
+hash map para manter telas já criadas em memória e possibilitar sua reutilização. O código relacionado funciona da seguinte
+maneira:
+
+```java
+ private final Map<Class<? extends Screen>, Screen> screenCache = new HashMap<Class<? extends Screen>, Screen>();
+```
+- Essa linha de código é bem extensa e apresenta várias funcionalidades que eu não havia visto antes, então tive que
+pesquisar sobre hash tables e como elas são aplicadas em java. 
+- Basicamente, ela declara a variável `screenCache` que servirá como o cache de telas, através da interface `Map`, utilizada
+para representar uma estrutura chave-valor. 
+- Dentro das chaves desse `Map`, `Class<? extends Screen>` representa qualquer classe que herde de 
+`Screen`, e essa classe é a chave. 
+- `Screen` é o valor que armazena a instância real da tela. 
+- É então definido o hash map de `screenCache` através do método `HashMap` da classe `Map`.
+
+```java
+  public void addScreen(Screen screen) {
+
+        screenCache.put(screen.getClass(), screen);
+    }
+```
+- Esse método é simples e somente adiciona uma tela ao cache de telas, utilizando como chave da tela a ser 
+adicionada sua própria classe. Cada tela é diretamente associada à sua classe, ou seja, utilizar um método para
+definir a tela atual, basta especificar a classe da tela, sem a necessidade de um objeto único para a tela.
+
+```java
+   public void setScreen(Class<? extends Screen> screenClass) {
+        Screen screen = screenCache.get(screenClass);
+        if (screen == null) {
+            throw new GdxRuntimeException("Screen " + screenClass.getSimpleName() + " not found in cache");
+        }
+        super.setScreen(screen);
+    }
+```
+- Esse método recebe uma classe de tela, busca a tela associada a esta classe no cache, e define a tela atual como 
+esta, se existir. 
+
+Com essa memória cache para as telas, falta definir as tais telas. A tela principal vai ser a `GameScreen`, onde toda
+lógica do jogo e renderização das texturas vai acontecer. Por enquanto, ambas funcionalidades estavam todas na classe 
+principal, então é necessário transferir esse código para a classe dedicada. Não foi muito díficil realizar esse processo,
+e o vídeo que utilizei como suporte ("Extending the Simple Game", consta nas referências) facilitou bastante isso.
+Uma das peculiaridades desse código é que alguns atributos como a `camera` e o `viewport` são antes definidos na classe 
+principal onde também se criam métodos `get` para cada um, para depois serem passados para a classe `GameScreen`. Isso foi 
+feito para facilitar a comunicação desses atributos para outras classes, caso se demonstre necessário.
+
+```java
+public GameScreen(UniVenture game) {
+        this.game = game;
+        this.viewport = game.getViewport();
+        this.camera = game.getCamera();
+        this.batch = game.getBatch();
+```
+  
+Além da tela de jogo, é importante definir também uma tela de menu, para recepcionar os jogadores de maneira mais amigável.
+Para isso, foi utilizada a biblioteca Scene2D do próprio libGDX. Ela facilita a criação de botões, tabelas de organização 
+e tratamento de cliques. Classes como `TextButton` e `Label` foram utilizadas para criar os botões e o título do jogo, 
+respectivamente. Também foi utilizada a classe `Table` para centralizar os botões automaticamente. Para estilizar o menu,
+é necessário utilizar uma "skin", que é basicamente um pacote de _assets_ que vão definir a aparência da UI do jogo. No 
+repositório oficial do libGDX é possível encontrar diversos desses pacotes já prontos. Inicialmente, vamos utilizar a skin
+padrão do libGDX. 
+
+```java
+TextButton startButton = new TextButton("Iniciar Jogo", skin);
+TextButton exitButton = new TextButton("Sair", skin);
+```
+> Exemplo da criação dos botões
+
+Além disso, os botões da tela de menu devem ser funcionais. Isso significa que a classe `MenuScreen` deve aceitar inputs 
+de mouse, e, quando um botão é pressionado, realizar determinada ação. Utilizando como exemplo o botão de "começar", ao 
+ser pressionado, ou seja, quando seu estado muda (changes), ele define a tela atual do programa como a tela `GameScreen`,
+onde a lógica do jogo e renderização de texturas acontece. 
+
+```java
+@Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.setScreen(GameScreen.class);
+            }
+```
 
 
-### 2.x Confecção do mapa
 
+### 2.4 Confecção do mapa e Definindo Entidades
+Definir a lógica de entidades, com áreas de colisão e suas interações com o jogador, é uma das partes mais importantes
+do projeto, e serve como base para a maioria das outras funcionalidades do jogo. Para criar as classes de cada entidade,
+o código do repositório do Jardim Botânico quest, que define uma superclasse "Entity", com vários filhos que são classes
+mais específicas, como a classe da entidade jogador, a classe da entidade personagem, etc. Essa superclasse define alguns
+atributos e métodos comuns para todas as entidades, que depois podem ser complementados ou até substituídos. Vou explicar
+aqui algumas das funcionalidades principais de cada subclasse Entity.  
+
+As principais características dos personagens não jogáveis (NPCs) do jogo são a zona de colisão e a caixa de diálogo (pois,
+no jogo, é possível interagir com os personagens). Esses dois atributos se complementam para definir essa lógica de interação
+com o jogador.
+
+```java
+public class NpcEntity extends Entity {
+    private String dialogText;
+    private Rectangle bounds; //bounds utiliza a classe do libGDX "Rectangle" e define os limites de cada textura
+```
+
+Para cada NPC, este deve ter uma textura associada, posição, tamanho e o texto da sua caixa de diálogo. Esses argumentos são
+importantes para o construtor da classe. Também é importante notar que para facilitar a renderização dos NPCs (que vão
+ser vários), adicionei todos em um ArrayList. 
+```java
+        this.npcTexture = new Texture("entidade.png");
+        this.npcs = new ArrayList<>();
+
+        npcs.add(new NpcEntity(5, 2, 1f, 1f, npcTexture, "Ola, sou um NPC normal."));
+        npcs.add(new NpcEntity(5, 2, 1f, 1f, npcTexture, "Ola, sou um NPC normal."));
+```
+
+Para fazer a caixa de diálogo funcionar, algumas alterações precisam ser feitas. Na classe GameScreen, criamos um novo 
+método para definir a interface gráfica dessa caixa de diálogo. Para isso, utilizamos recursos como a classe Window (do 
+próprio Java), que mais tarde é adaptada graficamente com a `skin` que definimos. Nesse caso, assim como na tela de menu,
+estamos utilizando a skin padrão do libGDX, adquirida em seu repositório oficial. 
+
+```java
+    uiStage = new Stage(new ScreenViewport());
+    skin = new Skin(Gdx.files.internal("uiskin.json")); 
+    
+            setupDialogUI();
+            
+            private void setupDialogUI() {
+            dialogTable = new Table();
+            dialogTable.setFillParent(true);
+            dialogTable.bottom(); 
+            
+            dialogLabel = new Label("", skin);
+            dialogLabel.setWrap(true); 
+                
+            Window window = new Window("Dialogo", skin);
+            window.add(dialogLabel).width(400).pad(10);
+        
+            dialogTable.add(window).padBottom(20);
+        
+            uiStage.addActor(dialogTable);
+            dialogTable.setVisible(false);
+        }
+```
+Também foi adicionado lógica para definir as interações do jogador com os NPCs. Caso o jogador pressione a tecla 'E',
+a caixa de diálogo do NPC se torna visível. Caso ele pressione 'E' novamente, a caixa fecha (se torna invisível). Antes
+de possibilitar que a caixa aparece, o programa deve conferir se o jogador está próximo o suficiente do personagem para 
+interagir com o mesmo.
+
+```java
+public void render(float delta) {
+    if (isDialogVisible) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.E) || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            isDialogVisible = false;
+            dialogTable.setVisible(false);
+        }
+    } else {
+        player.moveCharacter();
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
+            checkInteraction();
+        }
+    }
+    ...
+}
+
+private void checkInteraction() {
+    for (NpcEntity npc : npcs) {
+        if (npc.isCloseTo(player.getX(), player.getY(), 1.5f)) {
+            dialogLabel.setText(npc.getDialogText());
+            isDialogVisible = true;
+            dialogTable.setVisible(true);
+            break;
+        }
+    }
+}
+```
+> Com o for loop, o jogo confere se o jogador está próximo de um NPC ao apertar o botão de interagir 'E'. Caso positivo,
+> A caixa de diálogo pega o texto associado ao NPC e é definida como vísivel até o fim da interação.
+
+Utilizando o método da classe `Rectangle` `overlaps`, é possível detectar se um retângulo (nesse caso, a caixa de colisão)
+está "invadindo" outro. Assim, o programa pode, através do método `checkCollision`, iterar pela lista de NPCs e encontrar
+qualquer colisão. Com essa confirmação, o programa "bloqueia" a movimentação do jogador para dentro da zona de colisão do
+NPC. Essa lógica também pode ser implementada para definir paredes que não são necessariamente NPCs.
+
+```java
+private boolean checkCollision(List<NpcEntity> obstacles) {
+        Rectangle playerRect = characterSprite.getBoundingRectangle();
+        for (NpcEntity npc : obstacles) {
+            if (npc.getBounds().overlaps(playerRect)) {
+                return true; 
+            }
+        }
+        return false;
+    }
+```
+
+A classe para o jogador `PlayerEntity` segue uma lógica parecida. As principais diferenças são que, para garantir que as 
+caixas de colisão não interajam da forma errada. Quando eu estava tentando definir os retângulos de colisão, muitas vezes
+eles ficavam muito grandes, por vezes muito pequenos, criando situações onde era muito difícil jogar com paredes invisíveis
+que dificultavam muito o movimento. Para resolver isso, tive que diminuir a escala da área de colisão dos sprites, e 
+calcular precisamente aonde essas áreas deveriam ficar no mapa.
+
+```java
+    private boolean checkCollision(List<NpcEntity> obstacles) {
+        Rectangle fullRect = characterSprite.getBoundingRectangle();
+
+        float scaleWidth = 0.6f;
+        float scaleHeight = 0.3f;
+
+        float newWidth = fullRect.width * scaleWidth;
+        float newHeight = fullRect.height * scaleHeight;
+
+
+        float newX = (fullRect.x + fullRect.width / 2) - (newWidth / 2);
+
+        float yOffset = fullRect.height * 0.1f;
+        float newY = fullRect.y + yOffset;
+```
+
+Além disso, algumas pequenas alterações na lógica já existente do projeto (Como para o movimento do jogador) também foram 
+feitas para deixar o código mais simples.
 
 ## Referências
 2.1:
@@ -200,4 +412,21 @@ https://libgdx.com/wiki/graphics/viewports - Viewports
 https://stackoverflow.com/questions/14629653/libgdx-why-doesnt-the-camera-follow-the-character - 
 libgdx why doesn't the Camera follow the character?
 
-2.3: https://libgdx.com/wiki/start/simple-game-extended - Extending the Simple Game 
+2.3: https://libgdx.com/wiki/start/simple-game-extended - Extending the Simple Game  
+https://www-w3schools-com.translate.goog/java/ref_hashmap_put.asp?_x_tr_sl=en&_x_tr_tl=pt&_x_tr_hl=pt&_x_tr_pto=tc -
+Java HashMap put() Method  
+https://www.w3schools.com/java/java_hashmap.asp - Java HashMap  
+https://github.com/elc117/game-2024b-vmferreira - Repositório Jardim Botânico Quest  
+https://libgdx.com/wiki/graphics/2d/scene2d/scene2d - Scene2d  
+https://youtu.be/V8QTnsQpDWM?si=Q0cXKPV1aKkQCkSb - Gamedev with libGDX | E05 menu screen  
+
+2.4: https://youtu.be/ie6Ek6f-USY?si=Q-06MN-iHvPgPPv3 - Character Collisions In LibGDX  
+https://youtu.be/oYsA9PGCkQA?si=6g4-SgKqAZwmW1Q5 - Criando Colisões e Utilizando Fontes - Java LibGDX #04 Final  
+https://stackoverflow.com/questions/33062574/how-to-properly-implement-a-dialog-box-using-libgdx - how to properly implement a Dialog box using libgdx  
+https://www.catalinmunteanu.com/design-custom-dialog-libgdx.html - How to create custom Dialog in LibGDX  
+https://youtu.be/fxkuHa9FmGw?si=dgaUTx1hoWV9sBB5 - Request 19 (LibGDX) - How to use the Dialog from scene2d.ui  
+https://github.com/elc117/game-2024b-vmferreira - Repositório Jardim Botânico Quest  
+
+
+https://stackoverflow.com/questions/47644078/clamp-camera-to-map-zoom-issue - Clamp Camera to Map (Zoom issue)
+https://gamedev.stackexchange.com/questions/74926/libgdx-keep-camera-within-bounds-of-tiledmap - LibGDX keep camera within bounds of TiledMap
