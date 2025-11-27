@@ -439,6 +439,8 @@ Similiarmente, caso o jogador responda corretamente todas as questões, ele é r
 o jogo.
 
 ## 3 Diagrama de Classes
+Observar o diagrama de classes após a conclusão me explicitou algumas oportunidades perdidas de encapsulamento e herença.
+<img width="2497" height="1917" alt="paradigmas_classes" src="https://github.com/user-attachments/assets/1dc03b04-576d-4197-b115-e02953bbd888" />
 
 ## 4 Execução do projeto e Conclusão.
 
