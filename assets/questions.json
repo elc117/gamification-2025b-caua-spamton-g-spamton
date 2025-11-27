@@ -1,0 +1,27 @@
+[
+  {
+    "text": "Em que ano surgiu o Curso de Informatica da UFSM?",
+    "options": ["1989", "2004", "1994", "2009"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "text": "A UFSM foi a primeira universidade do Brasil a... ",
+    "options": ["Ofertar cursos de computacao", "Ter varios predios para diferentes cursos", "Ter um restaurante universitario", "Ser fundada fora de uma capital"],
+    "correctAnswerIndex": 3
+  },
+  {
+    "text": "Qual eh a principal linguagem Orientada a Objetos?",
+    "options": ["Python", "C", "Java", "Haskell"],
+    "correctAnswerIndex": 2
+  },
+  {
+    "text": "Aonde acontecem a maioria das aulas dos cursos de computacao?",
+    "options": ["CCNE", "CT", "CCSH", "HUSM"],
+    "correctAnswerIndex": 1
+  },
+  {
+    "text": "Qual a linguagem que os estudantes de computacao aprendem nos primeiros semestres?",
+    "options": ["C", "Java", "Rust", "JavaScript"],
+    "correctAnswerIndex": 0
+  }
+]

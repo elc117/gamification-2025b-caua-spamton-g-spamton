@@ -10,8 +10,8 @@
 
 Conforme o tema de "gamification", proposto pela professora, esse projeto tem como objetivo
 desenvolver um jogo, utilizando a biblioteca libGDX da linguagem de programação Java,
-que permita ao jogador explorar e aprender sobre locais da UFSM. Os principais objetivos desse trabalho são:
-- Desenvolver um jogo didático e lúdico, que possa passar aos jogador informações importantes sobre a universidade;
+que permita ao jogador explorar e aprender sobre fatos relacionados aos cursos de computação da UFSM. Os principais objetivos desse trabalho são:
+- Desenvolver um jogo didático e lúdico, que possa passar aos jogador informações importantes sobre a universidade e os cursos de computação;
 - Aplicar criações artísticas para garantir maior aproveitamento ao jogador;
 - Exercitar conceitos fundamentais do paradigma de programação orientada a objetos.
 
@@ -20,7 +20,7 @@ que permita ao jogador explorar e aprender sobre locais da UFSM. Os principais o
 Pretendo desenvolver um jogo em que seja possível movimentar o personagem pelas 4
 direções (cima, baixo, esquerda, direita) para explorar o mapa do jogo. Em cada mapa,
 alguns personagens interagíveis estarão presentes, cada um com uma linha de diálogo
-diferente, que revelarão informações sobre algumas das áreas da UFSM. Essa estrutura
+diferente, que revelarão informações sobre a UFSM e os cursos de computação. Essa estrutura
 básica de jogo já foi explorada em várias obras, com "Undertale" sendo uma das principais.
 Se trata de um jogo lançado em 2015 e desenvolvido por um time de apenas uma pessoa.
 O jogo contém elementos de RPG, como batalhas e itens, que não serão integrados ao projeto,
@@ -31,11 +31,8 @@ por conta de sua complexidade, mas o seu estilo e estrutura servirão de inspira
 > GIF de gameplay do jogo Undertale. A movimentação do personagem do jogador e as interações com personagens não
 > jogáveis são inspirações para o projeto.
 
-Além disso, o jogo contará com algumas fases, a cada fase terá um mapa diferente. 
-Os mapas do jogo serão alguns recortes de regiões da UFSM. Serão selecionados
-alguns pontos de interesse, e os diálogos dos personagens de cada mapa contarão um pouco da história 
-e funcionalidades desses pontos. Para avançar de fase, o jogador deve, ao final
-de cada fase, responder um quiz sobre os pontos de interesse apresentados no mapa. É
+O mapa do jogo será um recorte da UFSM, onde o jogador pode interagir com personagens para descobrir informações sobre
+a UFSM e os cursos de computação. É
 importante constar que os diálogos dos personagens servirão como fonte de informações
 para concluir o quiz. Isso significa que cada elemento tem uma funcionalidade como objetivo.
 
@@ -396,9 +393,65 @@ calcular precisamente aonde essas áreas deveriam ficar no mapa.
 ```
 
 Além disso, algumas pequenas alterações na lógica já existente do projeto (Como para o movimento do jogador) também foram 
-feitas para deixar o código mais simples.
+feitas para deixar o código mais simples. Para construir o mapa do jogo, utilizei o próprio MS Paint para desenhar em 
+estilo pixel art o mapa do jogo. Já que o jogo se trata de um RPG com visão "de cima" (top-down), o mapa é uma textura
+que fica no background, então não é necessário se preocupar com a física dos elementos em cima dele. Entretanto, foi 
+necessário criar áreas de colisão nas bordas do mapa para que o jogador não saísse dos limites. Essas áreas também são 
+retângulos e o tamanho dos retângulos é calculado com base no tamanho do mapa.
 
-## Referências
+### 2.5 Criando o Menu e o Quiz
+
+Para os quizes, foram criadas algumas classes novas, sendo essas `QuizScreen`, `Question` e `WinScreen`. A classe Question
+serve como base para as perguntas do quiz, e em QuizScreen essas questões são exibidas na tela. Quando propus a ideia de 
+fazer um jogo de quiz para a professora, foi sugerida a ideia de utilizar um arquivo JSON para guardar as informações das
+questões do quiz (Como a pergunta e a resposta), ao invés de utilizar um arquivo padrão txt. Embora qualquer uma das 
+abordagens funcione, escolhi seguir o conselho e utilizar o arquivo JSON, já que existem bibliotecas que tornam o processo
+de extrair as informações do arquivo muito simples e compacto.  
+Depois de organizar o arquivo JSON em "Texto" (Pergunta), "Opções" (Respostas) e "Indice" (Posição da resposta correta 
+no vetor), foi simples implementar um método que percorre cada campo de acordo com os nomes dos campos no arquivo JSON. 
+A biblioteca que possibilita esse processo é bem simples. Após isso, todas as informações relacionadas às questões são 
+armazenadas em um objeto da classe `Question`, que então é armazenado em um `ArrayList`.
+
+```java
+    private void createQuestions() {
+        questions = new ArrayList<Question>();
+        JsonReader json = new JsonReader();
+        JsonValue baseValue = json.parse(Gdx.files.internal("questions.json"));
+
+        for (JsonValue entry : baseValue) {
+            String text = entry.getString("text");
+            String[] options = entry.get("options").asStringArray();
+            int correctIndex = entry.getInt("correctAnswerIndex");
+            questions.add(new Question(text, options, correctIndex));
+        }
+    }
+```
+> Método que extrai as questões e suas informações do arquivo JSON
+
+Além disso, para criar o menu principal e a tela de quiz, foi utilizada novamente a biblioteca scene2d para a parte 
+gráfica. Adicionar botões, títulos e fundos é a face mais frontend do projeto, então não irei me aprofundar muito sobre 
+o funcionamento e o processo de criação dessa parte. Porém, acho importante destacar que os botões funcionam com uma área 
+de colisão e processamento de input (Nessa caso, o clique do mouse), muito similar a outros elementos do projeto. 
+Similiarmente, caso o jogador responda corretamente todas as questões, ele é recebido por uma tela de parabéns, que encerra
+o jogo.
+
+## 3 Diagrama de Classes
+
+## 4 Execução do projeto e Conclusão.
+
+Por se tratar de um trabalho extenso, que requer bastante esforço (especialmente quando um dos objetivos é criar as artes
+do jogo por conta própria), foi fácil subestimar quanto tempo seria necessário para fazer tudo que foi inicialmente planejado.
+Ao longo do desenvolvimento, por falta de tempo (e até de conhecimento), foi necessário mudar de planos constantemente, 
+cortando algumas das funcionalidades propostas inicialmente e encontrando maneiras diferentes de executar os novos objetivos.
+Entretanto, mesmo com essas dificuldades, acredito ter feito um bom projeto, que embora simples, exercitou alguns conceitos 
+fundamentais de programação orientada a objetos.  
+Para executar o projeto localmente, basta:  
+- Possuir JDK e Gradle instalados;
+- Clonar o repositório com `git-clone https://github.com/elc117/gamification-2025b-caua-spamton-g-spamton`;
+- No terminal, utilizar `gradlew lwjgl3:run`.  
+Deixo aqui um pequeno vídeo testando o projeto final:
+
+## 5 Referências
 2.1:
 https://libgdx.com/wiki/start/a-simple-game - A Simple Game  
 https://youtu.be/2furs-8L1-8?si=h3G4Aq-ZcxJ-Jmcb - Como Instalar a LibGDX e Primeiros Passos - Java #02  
@@ -426,7 +479,13 @@ https://stackoverflow.com/questions/33062574/how-to-properly-implement-a-dialog-
 https://www.catalinmunteanu.com/design-custom-dialog-libgdx.html - How to create custom Dialog in LibGDX  
 https://youtu.be/fxkuHa9FmGw?si=dgaUTx1hoWV9sBB5 - Request 19 (LibGDX) - How to use the Dialog from scene2d.ui  
 https://github.com/elc117/game-2024b-vmferreira - Repositório Jardim Botânico Quest  
+https://stackoverflow.com/questions/47644078/clamp-camera-to-map-zoom-issue - Clamp Camera to Map (Zoom issue)  
+https://gamedev.stackexchange.com/questions/74926/libgdx-keep-camera-within-bounds-of-tiledmap - LibGDX keep camera within bounds of TiledMap  
 
+2.5: https://libgdx.com/wiki/utils/reading-and-writing-json - Reading and writing JSON  
+https://stackoverflow.com/questions/35343727/how-to-parse-this-json-with-libgdx - How to Parse this JSON with LibGDX  
+https://jackyjjc.wordpress.com/2013/10/07/parsing-json-in-libgdx-tutorial/ - Parsing JSON in Libgdx
+https://libgdx.com/wiki/graphics/2d/scene2d/scene2d - Scene2d  
+https://libgdx.com/wiki/graphics/2d/scene2d/scene2d-ui - Scene2d.ui
+https://youtu.be/DPIeERAm2ao?si=m5nQkXFblU5X4TSC - Introduction to Scene2D in LibGDX
 
-https://stackoverflow.com/questions/47644078/clamp-camera-to-map-zoom-issue - Clamp Camera to Map (Zoom issue)
-https://gamedev.stackexchange.com/questions/74926/libgdx-keep-camera-within-bounds-of-tiledmap - LibGDX keep camera within bounds of TiledMap

@@ -35,6 +35,8 @@ public class UniVenture extends Game {
 
         addScreen(new GameScreen(this));
         addScreen(new MenuScreen(this));
+        addScreen(new QuizScreen(this));
+        addScreen(new WinScreen(this));
 
         setScreen(MenuScreen.class);
     }
@@ -42,6 +44,7 @@ public class UniVenture extends Game {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height, true);
+        super.resize(width, height);
     }
 
     public void addScreen(Screen screen) {
@@ -73,5 +76,9 @@ public class UniVenture extends Game {
 
     public OrthographicCamera getCamera() {
         return camera;
+    }
+
+    public Object getScreen(Class<GameScreen> gameScreenClass) {
+        return  screenCache.get(gameScreenClass);
     }
 }
