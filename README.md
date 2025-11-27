@@ -399,6 +399,9 @@ que fica no background, então não é necessário se preocupar com a física do
 necessário criar áreas de colisão nas bordas do mapa para que o jogador não saísse dos limites. Essas áreas também são 
 retângulos e o tamanho dos retângulos é calculado com base no tamanho do mapa.
 
+https://github.com/user-attachments/assets/82561227-50ef-4254-97ea-97796663f921
+> Antes de polir o código, o jogo estava assim
+
 ### 2.5 Criando o Menu e o Quiz
 
 Para os quizes, foram criadas algumas classes novas, sendo essas `QuizScreen`, `Question` e `WinScreen`. A classe Question
@@ -450,6 +453,8 @@ Para executar o projeto localmente, basta:
 - Clonar o repositório com `git-clone https://github.com/elc117/gamification-2025b-caua-spamton-g-spamton`;
 - No terminal, utilizar `gradlew lwjgl3:run`.  
 Deixo aqui um pequeno vídeo testando o projeto final:
+
+https://github.com/user-attachments/assets/aa0d9a12-b2d4-438f-a38d-53df70a3b77a
 
 ## 5 Referências
 2.1:
